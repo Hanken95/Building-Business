@@ -16,6 +16,7 @@ Ideas:
 -Elevator system?
 -Staff could do other things than earn money, like being a manager/HR/cleaner.
 -Main HR and main manager that goes with you to the next level.
+-Staff could get equipment to better their performance or stats.
 -The game goes in cycles(like days) or just constantly runs.
 -Different buldings can boost eachother if adjacent.
 -Win by:
