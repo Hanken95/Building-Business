@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    float minMagniude = 0.1f;
+    Transform cameraTransform;
+
+    float minMagniude = 0.01f;
     float movementSpeed;
     public float fastMovementSpeed = 0.8f;
     public float notmalMovementSpeed = 0.3f;
@@ -13,7 +15,7 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
-        
+        cameraTransform = GetComponentsInChildren<Transform>()[1];
     }
 
     void LateUpdate()
@@ -39,11 +41,17 @@ public class CameraController : MonoBehaviour
     {
         HandleKeyboardMovementInput();
         HandleKeyboardRotateInput();
+        HandleKeyboardZoomInput();
+    }
+
+    private void HandleKeyboardZoomInput()
+    {
+        cameraTransform.localPosition += new Vector3(0,-1,1) * Input.GetAxis("Zoom Axis");
     }
 
     private void HandleKeyboardRotateInput()
     {
-        transform.Rotate(0, Input.GetAxis("Rotation Axis"), 0);
+        transform.Rotate(0, Input.GetAxis("Rotation Axis") *rotationSpeed, 0);
     }
 
     private void HandleKeyboardMovementInput()
