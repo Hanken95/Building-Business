@@ -7,11 +7,20 @@ public class CameraController : MonoBehaviour
 {
     Transform cameraTransform;
 
-    float minMagniude = 0.01f;
-    float movementSpeed;
-    public float fastMovementSpeed = 0.8f;
-    public float notmalMovementSpeed = 0.3f;
+    private readonly float minMagniude = 0.1f;
+    private float movementSpeed;
+    public float fastMovementSpeed = 5f;
+    public float notmalMovementSpeed = 2f;
     public float rotationSpeed = 2;
+    public float zoomSpeed = 2;
+    public float mouseExtraZoomSpeed = 40;
+
+    public Vector3 cameraZoomMinLimit = new Vector3(0, 500, -500);
+    public Vector3 cameraZoomMaxLimit = new Vector3(0, 2500, -2500);
+    private Vector3 mouseStartPosition;
+    private Vector3 mouseCurrentPosition;
+
+    Ray MouseRay { get { return Camera.main.ScreenPointToRay(Input.mousePosition); } }
 
     void Start()
     {
@@ -22,11 +31,43 @@ public class CameraController : MonoBehaviour
     {
         HandleKeyboardInput();
         HandleMouseInput();
+        RestrictToCameraMaxAndMinZoom();
     }
 
     private void HandleMouseInput()
     {
         HandleMouseRotateInput();
+        HandleMouseZoomInput();
+        HandleMousePanInput();
+    }
+
+    private void HandleMousePanInput()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            var rayCastHits = Physics.RaycastAll(MouseRay);
+            foreach (var hit in rayCastHits)
+            {
+                if (hit.collider.CompareTag("Ground"))
+                {
+                    mouseStartPosition = hit.point;
+                }
+            }
+        }
+        if (Input.GetMouseButton(0))
+        {
+            var rayCastHits = Physics.RaycastAll(MouseRay);
+            foreach (var hit in rayCastHits)
+            {
+                if (hit.collider.CompareTag("Ground"))
+                {
+                    mouseCurrentPosition = hit.point;
+                }
+            }
+
+            transform.position = Vector3.Lerp(transform.position,
+              transform.position + mouseStartPosition - mouseCurrentPosition, Time.deltaTime * 30);
+        }
     }
 
     private void HandleMouseRotateInput()
@@ -46,7 +87,43 @@ public class CameraController : MonoBehaviour
 
     private void HandleKeyboardZoomInput()
     {
-        cameraTransform.localPosition += new Vector3(0,-1,1) * Input.GetAxis("Zoom Axis");
+        if (Input.GetKey(KeyCode.KeypadPlus) || Input.GetKey(KeyCode.Plus))
+        {
+            if (cameraTransform.localPosition.y > cameraZoomMinLimit.y && 
+                cameraTransform.localPosition.z < cameraZoomMinLimit.z)
+            {
+                cameraTransform.localPosition += new Vector3(0, -1, 1) * zoomSpeed;
+            }
+            RestrictToCameraMaxAndMinZoom();
+        }
+        if (Input.GetKey(KeyCode.KeypadMinus) || Input.GetKey(KeyCode.Minus))
+        {
+            if (cameraTransform.localPosition.y < cameraZoomMaxLimit.y &&
+                cameraTransform.localPosition.z > cameraZoomMaxLimit.z)
+            { 
+                cameraTransform.localPosition += new Vector3(0, 1, -1) * zoomSpeed;
+            }
+            RestrictToCameraMaxAndMinZoom();
+        }
+    }
+    
+    private void HandleMouseZoomInput()
+    {
+        cameraTransform.localPosition += Input.GetAxis("Mouse ScrollWheel") 
+            * mouseExtraZoomSpeed * zoomSpeed * new Vector3(0, -1, 1);
+        RestrictToCameraMaxAndMinZoom();
+    }
+
+    private void RestrictToCameraMaxAndMinZoom()
+    {
+        if (cameraTransform.localPosition.y < cameraZoomMinLimit.y)
+        {
+            cameraTransform.localPosition = cameraZoomMinLimit;
+        }
+        if (cameraTransform.localPosition.y > cameraZoomMaxLimit.y)
+        {
+            cameraTransform.localPosition = cameraZoomMaxLimit;
+        }
     }
 
     private void HandleKeyboardRotateInput()
