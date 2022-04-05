@@ -38,12 +38,25 @@ public class CameraController : MonoBehaviour
     {
         HandleMouseRotateInput();
         HandleMouseZoomInput();
-        HandleMousePanInput();
+        HandleMouseMiddleButtonInput();
+        HandleMouseLeftClickInput();
     }
 
-    private void HandleMousePanInput()
+    private void HandleMouseLeftClickInput()
     {
         if (Input.GetMouseButtonDown(0))
+        {
+            if (Physics.Raycast(MouseRay, out RaycastHit hitInfo) &&
+                hitInfo.collider.CompareTag("Building Tile"))
+            {
+                hitInfo.transform.GetChild(0).gameObject.SetActive(true);
+            }
+        }
+    }
+
+    private void HandleMouseMiddleButtonInput()
+    {
+        if (Input.GetMouseButtonDown(2))
         {
             var rayCastHits = Physics.RaycastAll(MouseRay);
             foreach (var hit in rayCastHits)
@@ -54,7 +67,7 @@ public class CameraController : MonoBehaviour
                 }
             }
         }
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(2))
         {
             var rayCastHits = Physics.RaycastAll(MouseRay);
             foreach (var hit in rayCastHits)
