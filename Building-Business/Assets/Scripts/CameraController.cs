@@ -7,7 +7,7 @@ public class CameraController : MonoBehaviour
 {
     Transform cameraTransform;
 
-    GameManager gameManager;
+    UIManager gameManager;
 
     private readonly float minMagniude = 0.1f;
     private float movementSpeed;
@@ -27,7 +27,7 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         cameraTransform = GetComponentsInChildren<Transform>()[1];
-        gameManager = FindObjectOfType<GameManager>();
+        gameManager = FindObjectOfType<UIManager>();
     }
 
     void LateUpdate()
@@ -52,10 +52,16 @@ public class CameraController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (Physics.Raycast(MouseRay, out RaycastHit hitInfo) &&
-                hitInfo.collider.CompareTag("Building Tile"))
+            if (Physics.Raycast(MouseRay, out RaycastHit hitInfo))
             {
-                gameManager.OpenBuildingsMenu(hitInfo.transform.gameObject);
+                if (hitInfo.collider.CompareTag("Building Tile"))
+                {
+                    gameManager.OpenBuildingsMenu(hitInfo.transform.gameObject);
+                }
+                if (hitInfo.collider.CompareTag("Building"))
+                {
+                    gameManager.OpenBuildingInfo(hitInfo.transform.gameObject);
+                }
             }
         }
     }

@@ -26,14 +26,12 @@ public class TabGroup : MonoBehaviour
             button.background.color = tabHover;
         }
     }
-    public void OnTabExit()
-    {
-        ResetTabs();
-    }
+
     public void OnTabSelected(TabButton button)
     {
         selectedTab = button;
         ResetTabs();
+        var test= button.GetComponentInChildren<Image>();
         button.background.color = tabActive;
         int index = button.transform.GetSiblingIndex();
 
@@ -49,6 +47,12 @@ public class TabGroup : MonoBehaviour
             }
         }
     }
+
+    public void OnTabExit()
+    {
+        ResetTabs();
+    }
+
     public void ResetTabs()
     {
         foreach (TabButton button in tabButtons)
@@ -60,5 +64,4 @@ public class TabGroup : MonoBehaviour
             button.background.color = tabIdle;
         }
     }
-
 }

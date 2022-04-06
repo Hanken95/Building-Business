@@ -1,37 +1,19 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public enum AbleToClick
-{
-    All,
-    UI
-}
 
 public class GameManager : MonoBehaviour
 {
-    Player player = Player.player;
-    public Text moneyText;
-    public GameObject buildingsMenu;
-    internal AbleToClick AbleToClick { get; private set; }
+    internal bool GamePaused { get; private set; } = false;
 
-    public void ChangeMoney(int amount)
+    public void PauseGame() 
     {
-        player.Money += amount;
-        moneyText.text = "Money: " + player.Money;
+        GamePaused = true;
     }
 
-    internal void OpenBuildingsMenu(GameObject gameObject)
+    public void ResumeGame() 
     {
-        AbleToClick = AbleToClick.UI;
-        buildingsMenu.SetActive(true);
-    }
-
-    internal void CloseBuildingsMenu()
-    {
-        AbleToClick = AbleToClick.All;
-        buildingsMenu.SetActive(false);
+        GamePaused = false;
     }
 }
