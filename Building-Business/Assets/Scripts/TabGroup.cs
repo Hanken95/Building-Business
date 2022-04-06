@@ -26,7 +26,7 @@ public class TabGroup : MonoBehaviour
             button.background.color = tabHover;
         }
     }
-    public void OnTabExit(TabButton button)
+    public void OnTabExit()
     {
         ResetTabs();
     }

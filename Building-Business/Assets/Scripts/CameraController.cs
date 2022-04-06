@@ -7,6 +7,8 @@ public class CameraController : MonoBehaviour
 {
     Transform cameraTransform;
 
+    GameManager gameManager;
+
     private readonly float minMagniude = 0.1f;
     private float movementSpeed;
     public float fastMovementSpeed = 5f;
@@ -25,19 +27,23 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         cameraTransform = GetComponentsInChildren<Transform>()[1];
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     void LateUpdate()
     {
-        HandleKeyboardInput();
-        HandleMouseInput();
-        RestrictToCameraMaxAndMinZoom();
+        if (gameManager.AbleToClick == AbleToClick.All)
+        {
+            HandleKeyboardInput();
+            HandleMouseInput();
+            RestrictToCameraMaxAndMinZoom();
+        }
     }
 
     private void HandleMouseInput()
     {
-        HandleMouseRotateInput();
-        HandleMouseZoomInput();
+        HandleMouseRightclickInput();
+        HandleMouseWheelInput();
         HandleMouseMiddleButtonInput();
         HandleMouseLeftClickInput();
     }
@@ -49,7 +55,7 @@ public class CameraController : MonoBehaviour
             if (Physics.Raycast(MouseRay, out RaycastHit hitInfo) &&
                 hitInfo.collider.CompareTag("Building Tile"))
             {
-                hitInfo.transform.GetChild(0).gameObject.SetActive(true);
+                gameManager.OpenBuildingsMenu(hitInfo.transform.gameObject);
             }
         }
     }
@@ -83,7 +89,7 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    private void HandleMouseRotateInput()
+    private void HandleMouseRightclickInput()
     {
         if (Input.GetMouseButton(1))
         {
@@ -120,7 +126,7 @@ public class CameraController : MonoBehaviour
         }
     }
     
-    private void HandleMouseZoomInput()
+    private void HandleMouseWheelInput()
     {
         cameraTransform.localPosition += Input.GetAxis("Mouse ScrollWheel") 
             * mouseExtraZoomSpeed * zoomSpeed * new Vector3(0, -1, 1);
