@@ -6,6 +6,13 @@ public class Office : MoneyGeneratingBuilding
 {
     private Office()
     {
-        moneyPerSecond = 10;
+        moneyGeneratedPerSecond = 100;
+        cost = 1000;
+    }
+
+    internal override void Start()
+    {
+        cost = 50;
+        base.Start();
     }
 }

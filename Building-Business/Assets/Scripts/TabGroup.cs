@@ -10,58 +10,84 @@ public class TabGroup : MonoBehaviour
     public Color tabIdle;
     public Color tabHover;
     public Color tabActive;
-    public TabButton selectedTab;
-    public List<GameObject> objectsToSwap;
+    private TabButton selectedTabButton;
+    private List<GameObject> pages = new List<GameObject>();
+    private UIManager uIManager;
 
-    public void Subscribe(TabButton button)
+    private void Start()
     {
-        tabButtons.Add(button);
-    }
-
-    public void OnTabEnter(TabButton button)
-    {
-        ResetTabs();
-        if (selectedTab == null || button != selectedTab)
+        uIManager = FindObjectOfType<UIManager>();
+        foreach (Page page in uIManager.pages)
         {
-            button.background.color = tabHover;
+            pages.Add(page.gameObject);
         }
     }
 
-    public void OnTabSelected(TabButton button)
+    public void Subscribe(TabButton tabButton)
     {
-        selectedTab = button;
-        ResetTabs();
-        var test= button.GetComponentInChildren<Image>();
-        button.background.color = tabActive;
-        int index = button.transform.GetSiblingIndex();
+        tabButtons.Add(tabButton);
+    }
 
-        for (int i = 0; i < objectsToSwap.Count; i++)
+    public void OnTabEnter(TabButton tabButton)
+    {
+        ResetNonSelectedTabs();
+        if (selectedTabButton == null || tabButton != selectedTabButton)
         {
-            if (i == index)
+            tabButton.background.color = tabHover;
+        }
+    }
+
+    public void OnTabSelected(TabButton tabBbutton)
+    {
+        if (selectedTabButton != tabBbutton)
+        {
+            selectedTabButton = tabBbutton;
+            ResetNonSelectedTabs();
+            uIManager.DisablePurchaseButton();
+            tabBbutton.background.color = tabActive;
+            int index = tabBbutton.transform.GetSiblingIndex();
+
+            for (int i = 0; i < pages.Count; i++)
             {
-                objectsToSwap[i].SetActive(true);
-            }
-            else
-            {
-                objectsToSwap[i].SetActive(false);
+                if (i == index)
+                {
+                    pages[i].SetActive(true);
+                }
+                else
+                {
+                    pages[i].SetActive(false);
+                }
             }
         }
     }
 
     public void OnTabExit()
     {
-        ResetTabs();
+        ResetNonSelectedTabs();
     }
 
-    public void ResetTabs()
+    public void ResetNonSelectedTabs()
     {
-        foreach (TabButton button in tabButtons)
+        foreach (TabButton tabButton in tabButtons)
         {
-            if (selectedTab != null && button == selectedTab)
+            if (selectedTabButton != null && tabButton == selectedTabButton)
             {
                 continue;
             }
-            button.background.color = tabIdle;
+            tabButton.background.color = tabIdle;
         }
     }
+    public void ResetAllTabsAndPageContent()
+    {
+        selectedTabButton = null;
+        foreach (TabButton tabButton in tabButtons)
+        {
+            tabButton.background.color = tabIdle;
+        }
+        for (int i = 0; i < pages.Count; i++)
+        {
+            pages[i].SetActive(false);
+        }
+    }
+
 }

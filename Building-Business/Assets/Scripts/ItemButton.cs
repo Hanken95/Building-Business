@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-public class PageButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
+public class ItemButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
 {
     public Page page;
 
@@ -13,10 +13,17 @@ public class PageButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHand
 
     public GameObject objectToPurchase;
 
+    int cost;
+
+    private Text costText;
+
     void Start()
     {
         background = GetComponent<Image>();
         page.Subscribe(this);
+        costText = GetComponentInChildren<Text>();
+        cost = objectToPurchase.GetComponent<PurchaseAbleItem>().cost;
+        costText.text = cost.ToString() + " €";
     }
 
     public virtual void OnPointerClick(PointerEventData eventData)

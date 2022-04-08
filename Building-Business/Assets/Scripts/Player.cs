@@ -12,7 +12,7 @@ class Player : MonoBehaviour
     }
 
     public string Name = "Britta";
-    public int Money { get; private set; } = 0;
+    public int Money { get; private set; } = 300;
     public int Income = 5;
     public int Experience = 0;
 

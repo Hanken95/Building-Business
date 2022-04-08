@@ -5,61 +5,75 @@ using UnityEngine;
 
 public class Page : MonoBehaviour
 {
-    public List<PageButton> pageButtons = new List<PageButton>();
+    public List<ItemButton> itemButtons = new List<ItemButton>();
 
     public Color buttonIdle;
     public Color buttonHover;
     public Color buttonActive;
-    PageButton selectedButton; 
-    public GameObject purchaseButton;
+    ItemButton selectedButton;
 
+    UIManager uIManager;
 
-    internal void Subscribe(PageButton pageButton)
+    private void Start()
     {
-        pageButtons.Add(pageButton);
+        uIManager = FindObjectOfType<UIManager>();
     }
 
-    internal void OnButtonEnter(PageButton pageButton)
+
+    internal void Subscribe(ItemButton itemButton)
     {
-        ResetButtons();
-        if (selectedButton == null || pageButton != selectedButton)
+        itemButtons.Add(itemButton);
+    }
+
+    internal void OnButtonEnter(ItemButton itemButton)
+    {
+        ResetNonSelectedButtons();
+        if (selectedButton == null || itemButton != selectedButton)
         {
-            pageButton.background.color = buttonHover;
+            itemButton.background.color = buttonHover;
         }
     }
 
-    internal void OnButtonSelected(PageButton pageButton)
+    internal void OnButtonSelected(ItemButton itemButton)
     {
-        if (selectedButton == null || selectedButton != pageButton)
+        if (selectedButton == null || selectedButton != itemButton)
         {
-            selectedButton = pageButton;
-            ResetButtons();
-            pageButton.background.color = buttonActive;
-            purchaseButton.SetActive(true);
-            var uIManager = FindObjectOfType<UIManager>();
-                uIManager.objectToPurchase = pageButton.objectToPurchase;
+            selectedButton = itemButton;
+            ResetNonSelectedButtons();
+            itemButton.background.color = buttonActive;
+            uIManager.EnablePurchaseButton();
+            uIManager.objectToPurchase = itemButton.objectToPurchase.GetComponent<PurchaseAbleItem>();
         }
         else
         {
             selectedButton = null;
-            purchaseButton.SetActive(false);
+            uIManager.DisablePurchaseButton();
         }
     }
 
     internal void OnButtonExit()
     {
-        ResetButtons();
+        ResetNonSelectedButtons();
     }
 
-    public void ResetButtons()
+    public void ClearAllButtons()
     {
-        foreach (PageButton pageButton in pageButtons)
+        selectedButton = null;
+        foreach (ItemButton itemButton in itemButtons)
         {
-            if (selectedButton != null && pageButton == selectedButton)
+            itemButton.background.color = buttonIdle;
+        }
+    }
+
+    private void ResetNonSelectedButtons()
+    {
+        foreach (ItemButton itemButton in itemButtons)
+        {
+            if (selectedButton != null && itemButton == selectedButton)
             {
                 continue;
             }
-            pageButton.background.color = buttonIdle;
+            itemButton.background.color = buttonIdle;
         }
     }
 }

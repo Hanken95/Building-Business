@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoneyGeneratingBuilding : MonoBehaviour
+public class MoneyGeneratingBuilding : PurchaseAbleItem
 {
-    internal int moneyPerSecond = 5;
-    void Start()
+    internal int moneyGeneratedPerSecond = 5;
+
+    internal virtual void Start()
     {
-        FindObjectOfType<Player>().Income += moneyPerSecond;
+        FindObjectOfType<Player>().Income += moneyGeneratedPerSecond;
     }
 
 
