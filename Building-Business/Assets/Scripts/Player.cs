@@ -8,26 +8,22 @@ class Player : MonoBehaviour
     void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
-        InvokeRepeating("GenerateMoney", 0.95f, 1);
+        InvokeRepeating("GenerateMoney", 0.95f, 3);
     }
 
     public string Name = "Britta";
-    public int Money { get; private set; } = 300;
-    public int Income = 5;
-    public int Experience = 0;
+    public int money = 300;
+    public int income = 5;
+    public int experience = 0;
 
 
-    public void GenerateMoney()
+    private void GenerateMoney()
     {
         if (!gameManager.GamePaused)
         {
-            ChangeMoneyByAmount(Income);
+            money += income;
         }
     }
 
-    public void ChangeMoneyByAmount(int amount)
-    {
-        Money += amount;
-    }
 }
 

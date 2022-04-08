@@ -13,8 +13,10 @@ public enum AbleToClick
 public class UIManager : MonoBehaviour
 {
     public Text moneyText;
+    public Text incomeText;
     public GameObject buildMenu;
     public GameObject purchaseButton;
+    public GameObject unableToPurchaseButton;
     public List<Page> pages;
 
     private TabGroup tabGroup;
@@ -28,16 +30,22 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
-        InvokeRepeating("UpdateUIMoney", 0, 1);
+        InvokeRepeating("UpdateUIMoneyContinuously", 0, 3);
     }
 
-    private void UpdateUIMoney()
+    public void UpdateUIMoney()
+    {
+        moneyText.text = "Money: " + FindObjectOfType<Player>().money.ToString() + "€";
+        incomeText.text = "Income: " + FindObjectOfType<Player>().income.ToString() + "€";
+    }
+    private void UpdateUIMoneyContinuously()
     {
         if (!gameManager.GamePaused)
         {
-            moneyText.text = "Money: " + FindObjectOfType<Player>().Money.ToString() + "€";
+            UpdateUIMoney();
         }
     }
+
 
     public void PlaceBuilding()
     {
@@ -47,8 +55,6 @@ public class UIManager : MonoBehaviour
 
         Instantiate(objectToPurchase, buildingPlacement.position,
             buildingPlacement.rotation, chosenTile.transform);
-
-        
 
         CloseBuildingsMenu();
     }
@@ -93,6 +99,17 @@ public class UIManager : MonoBehaviour
     internal void DisablePurchaseButton()
     {
         purchaseButton.SetActive(false);
+    }
+
+    public void DisplayUnableToPurchaseButton()
+    {
+        unableToPurchaseButton.SetActive(true);
+        Invoke("DisableUnableToPurchaseButton", 1.6f);
+    }
+
+    public void DisableUnableToPurchaseButton()
+    {
+        unableToPurchaseButton.SetActive(false);
     }
 
 }

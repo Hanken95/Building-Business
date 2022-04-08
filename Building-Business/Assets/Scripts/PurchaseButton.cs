@@ -8,43 +8,39 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 public class PurchaseButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
 {
-    Player player;
-    private UIManager uIMAnager;
+    private Player player;
+    private UIManager uIManager;
+
     public Color buttonIdle;
     public Color buttonHover;
-    public GameObject unableToPurchaseButton;
-
+    
     internal Image background;
 
     void Start()
     {
         background = GetComponent<Image>();
         player = FindObjectOfType<Player>();
-        uIMAnager = FindObjectOfType<UIManager>();
+        uIManager = FindObjectOfType<UIManager>();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (player.Money >= uIMAnager.objectToPurchase.cost)
+        int cost = uIManager.objectToPurchase.cost;
+        if (player.money >= cost)
         {
             background.color = buttonIdle;
-            uIMAnager.PlaceBuilding();
+            uIManager.PlaceBuilding();
+            player.money -= cost;
+            uIManager.UpdateUIMoney();
         }
         else
         {
-            DisplayUnableToPurchaseButton();
+            if (!uIManager.unableToPurchaseButton.activeSelf)
+            {
+                uIManager.DisplayUnableToPurchaseButton();
+            }
         }
-    }
 
-    private void DisplayUnableToPurchaseButton()
-    {
-        unableToPurchaseButton.SetActive(true);
-        Invoke("DisableUnableToPurchaseButton", 1.6f);
-    }
-
-    private void DisableUnableToPurchaseButton()
-    {
-        unableToPurchaseButton.SetActive(false);
     }
 
     public void OnPointerEnter(PointerEventData eventData)

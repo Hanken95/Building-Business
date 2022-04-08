@@ -6,9 +6,9 @@ public class MoneyGeneratingBuilding : PurchaseAbleItem
 {
     internal int moneyGeneratedPerSecond = 5;
 
-    internal virtual void Start()
+    void Awake()
     {
-        FindObjectOfType<Player>().Income += moneyGeneratedPerSecond;
+        FindObjectOfType<Player>().income += moneyGeneratedPerSecond;
     }
 
 
