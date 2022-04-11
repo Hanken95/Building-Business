@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Office : MoneyGeneratingBuilding
+public class Office : WorkPlace
 {
     private Office()
     {
-        moneyGeneratedPerSecond = 10;
         cost = 100;
+        value = 75;
+        moneyGeneratedPerEmployeeSkillPoint = 1;
     }
+    
 }

@@ -1,11 +1,13 @@
 ﻿
 
-class Factory : MoneyGeneratingBuilding
+class Factory : WorkPlace
 {
     private Factory()
     {
-        moneyGeneratedPerSecond = 15;
         cost = 120;
+        value = 60;
+        moneyGeneratedPerEmployeeSkillPoint = 1.2f;
+        happinessEffect = 0.1f;
     }
 }
 

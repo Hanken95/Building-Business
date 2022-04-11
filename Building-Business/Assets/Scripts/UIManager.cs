@@ -14,6 +14,8 @@ public class UIManager : MonoBehaviour
 {
     public Text moneyText;
     public Text incomeText;
+    public Text praiseText;
+    public Text complaintsText;
     public GameObject buildMenu;
     public GameObject purchaseButton;
     public GameObject unableToPurchaseButton;
@@ -22,15 +24,26 @@ public class UIManager : MonoBehaviour
     private TabGroup tabGroup;
     private GameManager gameManager;
     private GameObject chosenTile;
+    private Player player;
 
-    internal PurchaseAbleItem objectToPurchase;
+    public PurchaseAbleItem objectToPurchase;
 
-    internal AbleToClick AbleToClick { get; private set; }
+    public AbleToClick AbleToClick { get; private set; }
 
     void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
-        InvokeRepeating("UpdateUIMoneyContinuously", 0, 3);
+        player = FindObjectOfType<Player>();
+        InvokeRepeating("UpdateUIContinuously", 0.1f, GameManager.gameTickTime);
+    }
+
+    public void UpdatePraise()
+    {
+        praiseText.text = "Praise: " + player.TotalPraise;
+    }
+    public void UpdateComplaints()
+    {
+        complaintsText.text = "Complaints: " + player.TotalComplaints;
     }
 
     public void UpdateUIMoney()
@@ -38,28 +51,37 @@ public class UIManager : MonoBehaviour
         moneyText.text = "Money: " + FindObjectOfType<Player>().money.ToString() + "€";
         incomeText.text = "Income: " + FindObjectOfType<Player>().income.ToString() + "€";
     }
-    private void UpdateUIMoneyContinuously()
+    private void UpdateUIContinuously()
     {
         if (!gameManager.GamePaused)
         {
             UpdateUIMoney();
+            UpdatePraise();
+            UpdateComplaints();
         }
     }
 
 
     public void PlaceBuilding()
     {
-        var buildingPlacement = chosenTile.transform.GetChild(0);
+        if (objectToPurchase.GetType() == typeof(Office))
+        {
+            var buildingPlacement = chosenTile.transform.GetChild(0);
 
-        objectToPurchase.transform.localScale = buildingPlacement.localScale;
-
-        Instantiate(objectToPurchase, buildingPlacement.position,
-            buildingPlacement.rotation, chosenTile.transform);
+            Instantiate(objectToPurchase, buildingPlacement.position,
+                buildingPlacement.rotation, chosenTile.transform);
+        }
+        else
+        {
+            Instantiate(objectToPurchase, chosenTile.transform);
+        }
+        chosenTile.GetComponent<MeshRenderer>().enabled = false;
+        chosenTile.GetComponent<BoxCollider>().enabled = false;
 
         CloseBuildingsMenu();
     }
 
-    internal void OpenBuildMenu(GameObject tileToBuildOn)
+    public void OpenBuildMenu(GameObject tileToBuildOn)
     {
         chosenTile = tileToBuildOn;
         gameManager.PauseGame();
@@ -71,7 +93,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    internal void CloseBuildingsMenu()
+    public void CloseBuildingsMenu()
     {
         gameManager.ResumeGame();
         AbleToClick = AbleToClick.All;
@@ -87,29 +109,39 @@ public class UIManager : MonoBehaviour
         objectToPurchase = null;
     }
 
-    internal void OpenBuildingInfo(GameObject chosenBuilding)
+    public void OpenBuildingInfo(GameObject chosenBuilding)
     {
         gameManager.PauseGame();
     }
 
-    internal void EnablePurchaseButton()
+    public void EnablePurchaseButton()
     {
         purchaseButton.SetActive(true);
     }
-    internal void DisablePurchaseButton()
+    public void DisablePurchaseButton()
     {
         purchaseButton.SetActive(false);
     }
 
     public void DisplayUnableToPurchaseButton()
     {
-        unableToPurchaseButton.SetActive(true);
-        Invoke("DisableUnableToPurchaseButton", 1.6f);
+        if (IsInvoking("DisableUnableToPurchaseButton"))
+        {
+            CancelInvoke("DisableUnableToPurchaseButton");
+        }
+        if (!unableToPurchaseButton.activeSelf)
+        {
+            unableToPurchaseButton.SetActive(true);
+            Invoke("DisableUnableToPurchaseButton", 1.6f);
+        }
     }
 
     public void DisableUnableToPurchaseButton()
     {
-        unableToPurchaseButton.SetActive(false);
+        if (unableToPurchaseButton.activeSelf)
+        {
+            unableToPurchaseButton.SetActive(false);
+        }
     }
 
 }

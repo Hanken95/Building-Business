@@ -20,12 +20,12 @@ public class Page : MonoBehaviour
     }
 
 
-    internal void Subscribe(ItemButton itemButton)
+    public void Subscribe(ItemButton itemButton)
     {
         itemButtons.Add(itemButton);
     }
 
-    internal void OnButtonEnter(ItemButton itemButton)
+    public void OnButtonEnter(ItemButton itemButton)
     {
         ResetNonSelectedButtons();
         if (selectedButton == null || itemButton != selectedButton)
@@ -34,7 +34,7 @@ public class Page : MonoBehaviour
         }
     }
 
-    internal void OnButtonSelected(ItemButton itemButton)
+    public void OnButtonSelected(ItemButton itemButton)
     {
         if (selectedButton == null || selectedButton != itemButton)
         {
@@ -51,7 +51,7 @@ public class Page : MonoBehaviour
         }
     }
 
-    internal void OnButtonExit()
+    public void OnButtonExit()
     {
         ResetNonSelectedButtons();
     }
