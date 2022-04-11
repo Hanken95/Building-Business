@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4135023833224834270}
   - component: {fileID: 3862953557960376621}
   m_Layer: 0
-  m_Name: BuildingWithRoof
+  m_Name: Office
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
