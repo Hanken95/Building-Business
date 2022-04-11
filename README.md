@@ -8,9 +8,11 @@ Ideas:
 -Expand the buildings.
 -Hire emloyees for the jobs.
 -Employees have different skills that make them better att different things(like different jobs).
--Non-earning buildings can improve on different things.
+-Non/less-earning buildings can improve on different things.
 	-Gym.
 	-Café.
+	-Spa.
+	
 -Buy residental buildings that rise and fall in value and can give passive income from residents.
 	-Could give happiness to employees if given to them but lower passive income.
 -Elevator system?
@@ -46,3 +48,19 @@ Game Mechanics:
 	-Zoom.
 	-Move camera by dragging on the ground/plane.
 	-QWEASD and arrowkeys + ZX.
+Building mechanics:
+	-Upgrade buildings by:
+		-Renovating.
+		-Upgrading Equipment.
+		-Upgrading Non-work areas in building.
+	-Upgrading could:
+		-Improve happiness.
+		-Generate flat or per-employee income.
+		-Have more room.
+Buildings have Employees:
+	-They have stats that effect performance.
+	-They have different educational levels which effect performance.
+	-Their stats can be effected.
+	-They can add or reduce income based on role.
+	-Different role can effect different things in the game.
+	-
