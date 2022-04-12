@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WorkPlace : PurchaseAbleItem
+public class Workplace : Building
 {
-    protected int maxEmployees;
+    public int MaxEmployees { get; protected set; } = 40;
     protected float moneyGeneratedPerEmployeeSkillPoint;
     protected float happinessEffect = 0;
     public int Complaints { get; private set; } = 0;
@@ -20,7 +20,7 @@ public class WorkPlace : PurchaseAbleItem
 
     public bool Hire(Person employee)
     {
-        if (Employees.Count < maxEmployees)
+        if (Employees.Count < MaxEmployees)
         {
             Employees.Add(employee);
             return true;
@@ -41,7 +41,7 @@ public class WorkPlace : PurchaseAbleItem
             {
                 foreach (Person employee in Employees)
                 {
-                    if (employee.DecreaseHappiness(happinessEffect))
+                    if (employee.IncreaseHappiness(happinessEffect))
                     {
                         Praise++;
                     }
@@ -65,8 +65,18 @@ public class WorkPlace : PurchaseAbleItem
         float totalIncome = 0;
         foreach (Person employee in Employees)
         {
-            totalIncome += employee.skillLevel * moneyGeneratedPerEmployeeSkillPoint;
+            totalIncome += employee.SkillLevel * moneyGeneratedPerEmployeeSkillPoint;
         }
         return totalIncome;
     }
+    public float GetWorkplaceTotalHappiness()
+    {
+        float totalHappiness = 0;
+        foreach (Person employee in Employees)
+        {
+            totalHappiness += employee.Happiness;
+        }
+        return totalHappiness;
+    }
+
 }

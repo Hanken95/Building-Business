@@ -7,6 +7,6 @@ public class ExitButton : TabButton
 {
     public override void OnPointerClick(PointerEventData eventData)
     {
-        FindObjectOfType<UIManager>().CloseBuildingsMenu();
+        FindObjectOfType<UIManager>().CloseMenus();
     }
 }

@@ -11,16 +11,13 @@ public class TabGroup : MonoBehaviour
     public Color tabHover;
     public Color tabActive;
     private TabButton selectedTabButton;
-    private List<GameObject> pages = new List<GameObject>();
+    public List<GameObject> pages = new List<GameObject>();
     private UIManager uIManager;
 
     private void Start()
     {
         uIManager = FindObjectOfType<UIManager>();
-        foreach (Page page in uIManager.pages)
-        {
-            pages.Add(page.gameObject);
-        }
+        OnTabSelected(tabButtons[0]);
     }
 
     public void Subscribe(TabButton tabButton)
@@ -77,17 +74,9 @@ public class TabGroup : MonoBehaviour
             tabButton.background.color = tabIdle;
         }
     }
-    public void ResetAllTabsAndPageContent()
+    public void ResetTabsAndPagesToDefault()
     {
-        selectedTabButton = null;
-        foreach (TabButton tabButton in tabButtons)
-        {
-            tabButton.background.color = tabIdle;
-        }
-        for (int i = 0; i < pages.Count; i++)
-        {
-            pages[i].SetActive(false);
-        }
+        OnTabSelected(tabButtons[0]);
     }
 
 }

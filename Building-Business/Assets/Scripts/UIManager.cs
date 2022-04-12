@@ -17,16 +17,21 @@ public class UIManager : MonoBehaviour
     public Text praiseText;
     public Text complaintsText;
     public GameObject buildMenu;
+    public GameObject buildingInfoMenu;
+
     public GameObject purchaseButton;
     public GameObject unableToPurchaseButton;
-    public List<Page> pages;
+    public List<Page> buildMenuPages;
+    public List<Page> buildingInfoMenuPages;
 
-    private TabGroup tabGroup;
+    private TabGroup buildMenuTabGroup;
+    private TabGroup buildingInfoMenuTabGroup;
     private GameManager gameManager;
     private GameObject chosenTile;
     private Player player;
 
-    public PurchaseAbleItem objectToPurchase;
+    internal PurchaseAbleItem objectToPurchase;
+    internal Workplace selectedWorkplace;
 
     public AbleToClick AbleToClick { get; private set; }
 
@@ -64,12 +69,13 @@ public class UIManager : MonoBehaviour
 
     public void PlaceBuilding()
     {
+        var localTransform = chosenTile.transform.GetChild(0);
+        objectToPurchase.transform.localScale = localTransform.localScale;
         if (objectToPurchase.GetType() == typeof(Office))
         {
-            var buildingPlacement = chosenTile.transform.GetChild(0);
 
-            Instantiate(objectToPurchase, buildingPlacement.position,
-                buildingPlacement.rotation, chosenTile.transform);
+            Instantiate(objectToPurchase, localTransform.position,
+                localTransform.rotation, chosenTile.transform);
         }
         else
         {
@@ -78,8 +84,20 @@ public class UIManager : MonoBehaviour
         chosenTile.GetComponent<MeshRenderer>().enabled = false;
         chosenTile.GetComponent<BoxCollider>().enabled = false;
 
-        CloseBuildingsMenu();
+        CloseBuildMenu();
     }
+
+    internal void HireEmployee()
+    {
+        //selectedWorkplace.Hire((Person)objectToPurchase);
+    }
+
+    internal void CloseMenus()
+    {
+        CloseBuildMenu();
+        CloseBuildingInfoMenu();
+    }
+
 
     public void OpenBuildMenu(GameObject tileToBuildOn)
     {
@@ -87,31 +105,50 @@ public class UIManager : MonoBehaviour
         gameManager.PauseGame();
         AbleToClick = AbleToClick.UI;
         buildMenu.SetActive(true);
-        if (tabGroup == null)
+        if (buildMenuTabGroup == null)
         {
-            tabGroup = FindObjectOfType<TabGroup>();
+            buildMenuTabGroup = FindObjectOfType<TabGroup>();
         }
     }
 
-    public void CloseBuildingsMenu()
+    private void CloseBuildMenu()
     {
-        gameManager.ResumeGame();
         AbleToClick = AbleToClick.All;
-        tabGroup.ResetAllTabsAndPageContent();
+        buildMenuTabGroup.ResetTabsAndPagesToDefault();
         buildMenu.SetActive(false);
         DisablePurchaseButton();
 
-        foreach (Page page in pages)
+        foreach (Page page in buildMenuPages)
         {
             page.ClearAllButtons();
         }
 
         objectToPurchase = null;
+        gameManager.ResumeGame();
     }
 
-    public void OpenBuildingInfo(GameObject chosenBuilding)
+    public void OpenBuildingInfoMenu(GameObject chosenBuilding)
     {
         gameManager.PauseGame();
+        selectedWorkplace = chosenBuilding.GetComponent<Workplace>();
+        buildingInfoMenu.SetActive(true);
+        if (buildingInfoMenuTabGroup == null)
+        {
+            buildingInfoMenuTabGroup = FindObjectOfType<TabGroup>();
+        }
+    }
+    private void CloseBuildingInfoMenu()
+    {
+        buildingInfoMenuTabGroup.ResetTabsAndPagesToDefault();
+        buildingInfoMenu.SetActive(false);
+
+        foreach (Page page in buildingInfoMenuPages)
+        {
+            page.ClearAllButtons();
+        }
+
+        selectedWorkplace = null;
+        gameManager.ResumeGame();
     }
 
     public void EnablePurchaseButton()

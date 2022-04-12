@@ -60,7 +60,7 @@ public class CameraController : MonoBehaviour
                 }
                 if (hitInfo.collider.CompareTag("Building"))
                 {
-                    uIManager.OpenBuildingInfo(hitInfo.transform.gameObject);
+                    uIManager.OpenBuildingInfoMenu(hitInfo.transform.gameObject);
                 }
             }
         }

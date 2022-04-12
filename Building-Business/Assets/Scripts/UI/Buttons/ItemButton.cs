@@ -11,9 +11,7 @@ public class ItemButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHand
 
     internal Image background;
 
-    public GameObject objectToPurchase;
-
-    int cost;
+    public PurchaseAbleItem objectToPurchase;
 
     private Text costText;
 
@@ -22,7 +20,7 @@ public class ItemButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHand
         background = GetComponent<Image>();
         page.Subscribe(this);
         costText = GetComponentInChildren<Text>();
-        cost = objectToPurchase.GetComponent<PurchaseAbleItem>().cost;
+        var cost = objectToPurchase.GetComponent<PurchaseAbleItem>().cost;
         costText.text = cost.ToString() + " €";
     }
 

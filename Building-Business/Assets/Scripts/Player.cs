@@ -6,21 +6,21 @@ using UnityEngine;
 class Player : MonoBehaviour
 {
     GameManager gameManager;
-    List<WorkPlace> workPlaces = new List<WorkPlace>();
+    List<Workplace> workPlaces = new List<Workplace>();
     public int TotalPraise { get; private set; } = 1;
     public int TotalComplaints { get; private set; } = 2;
-    void Start()
-    {
-        gameManager = FindObjectOfType<GameManager>();
-        InvokeRepeating("GenerateMoney", 0f, GameManager.gameTickTime);
-        InvokeRepeating("GatherPraiseAndComplaints", 0f, GameManager.gameTickTime);
-    }
 
     public string Name = "Britta";
     public int money = 300;
     public int income = 5;
     public int experience = 0;
 
+    void Start()
+    {
+        gameManager = FindObjectOfType<GameManager>();
+        InvokeRepeating("GenerateMoney", 0f, GameManager.gameTickTime);
+        InvokeRepeating("GatherPraiseAndComplaints", 0f, GameManager.gameTickTime);
+    }
 
     private void GenerateMoney()
     {
@@ -30,7 +30,7 @@ class Player : MonoBehaviour
         }
     }
 
-    public void AddWorkplace(WorkPlace workPlace)
+    public void AddWorkplace(Workplace workPlace)
     {
         workPlaces.Add(workPlace);
     }
@@ -38,7 +38,7 @@ class Player : MonoBehaviour
     public void SetPlayerTotalIncome()
     {
         float totalPlayerIncome = 0;
-        foreach (WorkPlace workPlace in workPlaces)
+        foreach (Workplace workPlace in workPlaces)
         {
             totalPlayerIncome += workPlace.GetWorkplaceIncome();
         }
@@ -52,7 +52,7 @@ class Player : MonoBehaviour
             int praise = 0;
             int complaints = 0;
 
-            foreach (WorkPlace workPlace in workPlaces)
+            foreach (Workplace workPlace in workPlaces)
             {
                 praise += workPlace.Praise;
                 complaints += workPlace.Complaints;

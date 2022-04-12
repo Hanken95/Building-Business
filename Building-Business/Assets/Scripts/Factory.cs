@@ -1,6 +1,6 @@
 ﻿
 
-class Factory : WorkPlace
+public class Factory : Workplace
 {
     private Factory()
     {
@@ -8,6 +8,7 @@ class Factory : WorkPlace
         value = 60;
         moneyGeneratedPerEmployeeSkillPoint = 1.2f;
         happinessEffect = 0.1f;
+        MaxEmployees = 30;
     }
 }
 
