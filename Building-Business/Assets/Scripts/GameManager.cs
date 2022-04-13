@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public bool GamePaused { get; private set; } = false;
     public static float gameTickTime = 3;
-    internal List<Person> availablePeople = new List<Person>();
+    public List<Person> availablePeople = new List<Person>();
     private int availablePeopleStartingAmount = 30;
 
     void Awake()

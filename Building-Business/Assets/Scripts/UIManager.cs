@@ -10,6 +10,13 @@ public enum AbleToClick
     UI
 }
 
+public enum ActiveMenu
+{
+    None,
+    Build,
+    BuildingInfo
+}
+
 public class UIManager : MonoBehaviour
 {
     public Text moneyText;
@@ -33,8 +40,11 @@ public class UIManager : MonoBehaviour
 
     internal PurchaseAbleItem objectToPurchase;
     internal Workplace selectedWorkplace;
+    internal PageWithItemButtons activePage;
 
     public AbleToClick AbleToClick { get; private set; }
+
+    private ActiveMenu activeMenu = ActiveMenu.None;
 
     void Start()
     {
@@ -57,6 +67,7 @@ public class UIManager : MonoBehaviour
         moneyText.text = "Money: " + FindObjectOfType<Player>().money.ToString() + "€";
         incomeText.text = "Income: " + FindObjectOfType<Player>().income.ToString() + "€";
     }
+
     private void UpdateUIContinuously()
     {
         if (!gameManager.GamePaused)
@@ -75,17 +86,17 @@ public class UIManager : MonoBehaviour
         if (objectToPurchase.GetType() == typeof(Office))
         {
 
-            Instantiate(objectToPurchase, localTransform.position,
+            Instantiate(objectToPurchase.gameObject, localTransform.position,
                 localTransform.rotation, chosenTile.transform);
         }
         else
         {
-            Instantiate(objectToPurchase, chosenTile.transform);
+            Instantiate(objectToPurchase.gameObject, chosenTile.transform);
         }
         chosenTile.GetComponent<MeshRenderer>().enabled = false;
         chosenTile.GetComponent<BoxCollider>().enabled = false;
 
-        CloseBuildMenu();
+        CloseActiveMenu();
     }
 
     internal void HireEmployee()
@@ -93,15 +104,24 @@ public class UIManager : MonoBehaviour
         //selectedWorkplace.Hire((Person)objectToPurchase);
     }
 
-    internal void CloseMenus()
+    internal void CloseActiveMenu()
     {
-        CloseBuildMenu();
-        CloseBuildingInfoMenu();
+        switch (activeMenu)
+        {
+            case ActiveMenu.Build:
+                CloseBuildMenu();
+                break;
+            case ActiveMenu.BuildingInfo:
+                CloseBuildingInfoMenu();
+                break;
+        }
+        activeMenu = ActiveMenu.None;
+        AbleToClick = AbleToClick.All;
     }
-
 
     public void OpenBuildMenu(GameObject tileToBuildOn)
     {
+        activeMenu = ActiveMenu.Build;
         chosenTile = tileToBuildOn;
         gameManager.PauseGame();
         AbleToClick = AbleToClick.UI;
@@ -110,21 +130,16 @@ public class UIManager : MonoBehaviour
         {
             buildMenuTabGroup = FindObjectOfType<TabGroup>();
         }
-        buildMenuTabGroup.ResetTabsAndPagesToDefault();
     }
 
     private void CloseBuildMenu()
     {
-        AbleToClick = AbleToClick.All;
         buildMenuTabGroup.ResetTabsAndPagesToDefault();
         buildMenu.SetActive(false);
         DisablePurchaseButton();
 
-        foreach (PageWithItemButtons page in buildMenuPages)
-        {
-            page.ClearAllButtons();
-        }
-
+        activePage.ClearAllButtons();
+        
         objectToPurchase = null;
         gameManager.ResumeGame();
     }
@@ -138,17 +153,15 @@ public class UIManager : MonoBehaviour
         {
             buildingInfoMenuTabGroup = FindObjectOfType<TabGroup>();
         }
+        activeMenu = ActiveMenu.BuildingInfo;
+        AbleToClick = AbleToClick.UI;
     }
+
     private void CloseBuildingInfoMenu()
     {
         buildingInfoMenuTabGroup.ResetTabsAndPagesToDefault();
         buildingInfoMenu.SetActive(false);
-
-        foreach (PageWithItemButtons page in buildingInfoMenuPages)
-        {
-            page.ClearAllButtons();
-        }
-
+        
         selectedWorkplace = null;
         gameManager.ResumeGame();
     }
@@ -157,6 +170,7 @@ public class UIManager : MonoBehaviour
     {
         purchaseButton.SetActive(true);
     }
+
     public void DisablePurchaseButton()
     {
         purchaseButton.SetActive(false);
@@ -182,5 +196,4 @@ public class UIManager : MonoBehaviour
             unableToPurchaseButton.SetActive(false);
         }
     }
-
 }

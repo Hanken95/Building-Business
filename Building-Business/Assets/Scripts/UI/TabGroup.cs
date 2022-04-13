@@ -10,13 +10,15 @@ public class TabGroup : MonoBehaviour
     public Color tabIdle;
     public Color tabHover;
     public Color tabActive;
-    private TabButton selectedTabButton;
     public List<GameObject> pages = new List<GameObject>();
+    public TabButton defaultTabButton;
+    private TabButton selectedTabButton;
     private UIManager uIManager;
 
     private void Start()
     {
         uIManager = FindObjectOfType<UIManager>();
+        ResetTabsAndPagesToDefault();
     }
 
     public void Subscribe(TabButton tabButton)
@@ -48,9 +50,15 @@ public class TabGroup : MonoBehaviour
                 if (i == index)
                 {
                     pages[i].SetActive(true);
+                    uIManager.activePage = pages[i].GetComponent<PageWithItemButtons>();
                 }
                 else
                 {
+                    var pageScript = pages[i].GetComponent<PageWithItemButtons>();
+                    if (pageScript != null)
+                    {
+                        pageScript.ClearAllButtons();
+                    }
                     pages[i].SetActive(false);
                 }
             }
@@ -75,7 +83,7 @@ public class TabGroup : MonoBehaviour
     }
     public void ResetTabsAndPagesToDefault()
     {
-        OnTabSelected(tabButtons[0]);
+        OnTabSelected(defaultTabButton);
     }
 
 }

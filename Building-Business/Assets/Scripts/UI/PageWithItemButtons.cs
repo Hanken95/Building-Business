@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PageWithItemButtons : Page
 {
-    public List<ItemButton> itemButtons = new List<ItemButton>();
+    internal List<ItemButton> itemButtons = new List<ItemButton>();
 
     public Color buttonIdle;
     public Color buttonHover;
@@ -61,7 +61,15 @@ public class PageWithItemButtons : Page
         selectedButton = null;
         foreach (ItemButton itemButton in itemButtons)
         {
-            itemButton.background.color = buttonIdle;
+            try
+            {
+                itemButton.background.color = buttonIdle;
+            }
+            catch (Exception)
+            {
+                Debug.Log("No background or something");
+            }
+            
         }
     }
 

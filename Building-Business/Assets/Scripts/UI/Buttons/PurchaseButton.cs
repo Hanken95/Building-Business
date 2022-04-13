@@ -29,13 +29,21 @@ public class PurchaseButton : MonoBehaviour, IPointerEnterHandler, IPointerClick
         if (player.money >= cost)
         {
             background.color = buttonIdle;
-            if (uIManager.objectToPurchase.GetType() == typeof(Building))
+            if (uIManager.objectToPurchase is Building)
             {
                 uIManager.PlaceBuilding();
             }
             else if (uIManager.objectToPurchase.GetType() == typeof(Person))
             {
                 uIManager.HireEmployee();
+            }
+            else
+            {
+                if (!uIManager.unableToPurchaseButton.activeSelf)
+                {
+                    uIManager.DisplayUnableToPurchaseButton();
+                }
+                return;
             }
             player.money -= cost;
             uIManager.UpdateUIMoney();

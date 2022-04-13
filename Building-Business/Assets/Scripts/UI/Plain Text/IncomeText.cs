@@ -6,6 +6,11 @@ public class IncomeText : InfoText
 {
     private void Start()
     {
+        UpdateWorkPlaceIncome();
+    }
+
+    private void UpdateWorkPlaceIncome()
+    {
         SetText("Building Income: " + selectedWorkPlace.GetWorkplaceIncome().ToString() + "€");
     }
 }

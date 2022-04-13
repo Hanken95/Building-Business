@@ -15,7 +15,7 @@ public class ItemButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHand
 
     private Text costText;
 
-    void Start()
+    void Awake()
     {
         background = GetComponent<Image>();
         page.Subscribe(this);
