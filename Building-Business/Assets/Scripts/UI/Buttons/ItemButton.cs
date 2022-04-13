@@ -7,11 +7,11 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 public class ItemButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
 {
-    public Page page;
+    public PageWithItemButtons page;
 
     internal Image background;
 
-    public PurchaseAbleItem objectToPurchase;
+    public GameObject objectToPurchase;
 
     private Text costText;
 

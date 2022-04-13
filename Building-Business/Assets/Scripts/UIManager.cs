@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
     public Text incomeText;
     public Text praiseText;
     public Text complaintsText;
+
     public GameObject buildMenu;
     public GameObject buildingInfoMenu;
 
@@ -109,6 +110,7 @@ public class UIManager : MonoBehaviour
         {
             buildMenuTabGroup = FindObjectOfType<TabGroup>();
         }
+        buildMenuTabGroup.ResetTabsAndPagesToDefault();
     }
 
     private void CloseBuildMenu()
@@ -118,7 +120,7 @@ public class UIManager : MonoBehaviour
         buildMenu.SetActive(false);
         DisablePurchaseButton();
 
-        foreach (Page page in buildMenuPages)
+        foreach (PageWithItemButtons page in buildMenuPages)
         {
             page.ClearAllButtons();
         }
@@ -142,7 +144,7 @@ public class UIManager : MonoBehaviour
         buildingInfoMenuTabGroup.ResetTabsAndPagesToDefault();
         buildingInfoMenu.SetActive(false);
 
-        foreach (Page page in buildingInfoMenuPages)
+        foreach (PageWithItemButtons page in buildingInfoMenuPages)
         {
             page.ClearAllButtons();
         }

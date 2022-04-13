@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class TabGroup : MonoBehaviour
 {
-    public List<TabButton> tabButtons = new List<TabButton>();
+    internal List<TabButton> tabButtons = new List<TabButton>();
 
     public Color tabIdle;
     public Color tabHover;
@@ -17,7 +17,6 @@ public class TabGroup : MonoBehaviour
     private void Start()
     {
         uIManager = FindObjectOfType<UIManager>();
-        OnTabSelected(tabButtons[0]);
     }
 
     public void Subscribe(TabButton tabButton)
