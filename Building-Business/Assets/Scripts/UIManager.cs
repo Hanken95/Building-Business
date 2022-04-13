@@ -28,6 +28,8 @@ public class UIManager : MonoBehaviour
     public GameObject buildingInfoMenu;
 
     public GameObject purchaseButton;
+    public GameObject hireButton;
+    public GameObject fireButton;
     public GameObject unableToPurchaseButton;
     public List<Page> buildMenuPages;
     public List<Page> buildingInfoMenuPages;
@@ -174,6 +176,26 @@ public class UIManager : MonoBehaviour
     public void DisablePurchaseButton()
     {
         purchaseButton.SetActive(false);
+    }
+
+    public void EnableHireButton()
+    {
+        hireButton.SetActive(true);
+    }
+
+    public void DisableHireButton()
+    {
+        hireButton.SetActive(false);
+    }
+
+    public void EnableFireButton()
+    {
+        fireButton.SetActive(true);
+    }
+
+    public void DisableFireButton()
+    {
+        fireButton.SetActive(false);
     }
 
     public void DisplayUnableToPurchaseButton()

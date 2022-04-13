@@ -12,7 +12,7 @@ public class PageWithItemButtons : Page
     public Color buttonActive;
     ItemButton selectedButton;
 
-    UIManager uIManager;
+    protected UIManager uIManager;
 
     private void Start()
     {
@@ -38,17 +38,25 @@ public class PageWithItemButtons : Page
     {
         if (selectedButton == null || selectedButton != itemButton)
         {
-            selectedButton = itemButton;
-            ResetNonSelectedButtons();
-            itemButton.background.color = buttonActive;
-            uIManager.EnablePurchaseButton();
-            uIManager.objectToPurchase = itemButton.objectToPurchase.GetComponent<PurchaseAbleItem>();
+            SelectUnselectedItemButton(itemButton);
         }
         else
         {
-            selectedButton = null;
-            uIManager.DisablePurchaseButton();
+            DeselectItemButton();
         }
+    }
+
+    protected virtual void DeselectItemButton()
+    {
+        selectedButton = null;
+    }
+
+    protected virtual void SelectUnselectedItemButton(ItemButton itemButton)
+    {
+        selectedButton = itemButton;
+        ResetNonSelectedButtons();
+        itemButton.background.color = buttonActive;
+        
     }
 
     public void OnButtonExit()
