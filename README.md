@@ -57,6 +57,10 @@ Building mechanics:
 		-Improve happiness.
 		-Generate flat or per-employee income.
 		-Have more room.
+	-Buildings Could train skills:
+		-Workplaces train slowly.
+		-Non-money-generating buildings train faster.
+		-Could be upgraded to increase faster.
 Buildings have Employees:
 	-They have stats that effect performance.
 	-They have different educational levels which effect performance.
