@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class IncomeText : InfoText
 {
-    private void Start()
+    public override void SetText()
     {
-        UpdateWorkPlaceIncome();
-    }
-
-    private void UpdateWorkPlaceIncome()
-    {
-        SetText("Building Income: " + selectedWorkPlace.GetWorkplaceIncome().ToString() + "€");
+        SetSelectedWorkPlace();
+        newText = "Building income: " + selectedWorkPlace.GetWorkplaceIncome().ToString() + "€";
+        base.SetText();
     }
 }

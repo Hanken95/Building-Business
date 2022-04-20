@@ -5,7 +5,6 @@ using UnityEngine;
 
 class Player : MonoBehaviour
 {
-    GameManager gameManager;
     List<Workplace> workPlaces = new List<Workplace>();
     public int TotalPraise { get; private set; } = 1;
     public int TotalComplaints { get; private set; } = 2;
@@ -17,14 +16,13 @@ class Player : MonoBehaviour
 
     void Start()
     {
-        gameManager = FindObjectOfType<GameManager>();
         InvokeRepeating("GenerateMoney", 0f, GameManager.gameTickTime);
         InvokeRepeating("GatherPraiseAndComplaints", 0f, GameManager.gameTickTime);
     }
 
     private void GenerateMoney()
     {
-        if (!gameManager.GamePaused)
+        if (!GameManager.GamePaused)
         {
             money += income;
         }

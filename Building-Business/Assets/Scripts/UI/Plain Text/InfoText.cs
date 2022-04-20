@@ -7,13 +7,18 @@ using UnityEngine.UI;
 public class InfoText : MonoBehaviour
 {
     protected Workplace selectedWorkPlace;
+    protected string newText;
 
-    void Awake()
+
+    protected void SetSelectedWorkPlace()
     {
-        selectedWorkPlace =  FindObjectOfType<UIManager>().selectedWorkplace;
+        if (selectedWorkPlace != FindObjectOfType<UIManager>().selectedWorkplace)
+        {
+            selectedWorkPlace = FindObjectOfType<UIManager>().selectedWorkplace;
+        }
     }
 
-    protected void SetText(string newText)
+    public virtual void SetText()
     {
         GetComponent<Text>().text = newText;
     }

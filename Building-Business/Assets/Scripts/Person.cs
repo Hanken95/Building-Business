@@ -2,10 +2,12 @@
 
 public class Person
 {
-    internal float Happiness { get; private set; } = 3;
+    internal double Happiness { get; private set; }
+
     internal int SkillLevel { get; private set; }
 
     internal string name;
+    internal int cost = 10;
     private float maxHappiness = 10;
     private float minHappiness = -10;
     private Random random = new Random();
@@ -13,16 +15,30 @@ public class Person
     internal Person()
     {
         SetRandomStartingValues();
+        name = RandomNameGenerator.GenerateRandomName();
+    }
+
+    internal Person(string name)
+    {
+        SetRandomStartingValues();
+        this.name = name;
+    }
+
+    public Person(string name, double happiness, int skillLevel)
+    {
+        this.name = name;
+        Happiness = happiness;
+        SkillLevel = skillLevel;
     }
 
     private void SetRandomStartingValues()
     {
-        Happiness = random.Next(-1, 3);
+        var hap = random.Next(-1, 3);
+        Happiness = hap;
         SkillLevel = random.Next(1, 5);
-        name = RandomNameGenerator.GenerateRandomName();
     }
 
-    public bool IncreaseHappiness(float amount)
+    public bool IncreaseHappiness(double amount)
     {
         if (Happiness < maxHappiness)
         {
@@ -31,7 +47,7 @@ public class Person
         }
         return true;
     }
-    public bool DecreaseHappiness(float amount)
+    public bool DecreaseHappiness(double amount)
     {
         if (Happiness > minHappiness)
         {

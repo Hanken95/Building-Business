@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public bool GamePaused { get; private set; } = false;
+    public static bool GamePaused { get; private set; } = false;
     public static float gameTickTime = 3;
     public List<Person> availablePeople = new List<Person>();
-    private int availablePeopleStartingAmount = 30;
+    private int availablePeopleStartingAmount = 8;
 
     void Awake()
     {

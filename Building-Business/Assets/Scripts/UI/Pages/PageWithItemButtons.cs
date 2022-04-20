@@ -14,7 +14,7 @@ public class PageWithItemButtons : Page
 
     protected UIManager uIManager;
 
-    private void Start()
+    protected virtual void Start()
     {
         uIManager = FindObjectOfType<UIManager>();
     }

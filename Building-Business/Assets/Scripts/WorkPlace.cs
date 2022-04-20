@@ -4,37 +4,47 @@ using UnityEngine;
 
 public class Workplace : Building
 {
+    public List<double> employeeHappinessList = new List<double>();
+
     public int MaxEmployees { get; protected set; } = 40;
     protected float moneyGeneratedPerEmployeeSkillPoint;
-    protected float happinessEffect = 0;
+    protected double happinessEffect = 0;
     public int Complaints { get; private set; } = 0;
     public int Praise { get; private set; } = 0;
 
-    public List<Person> Employees { get; private set; } = new List<Person>();
+    public List<Employee> Employees { get; private set; } = new List<Employee>();
 
-    private void Start()
+    protected virtual void Start()
     {
         FindObjectOfType<Player>().AddWorkplace(this);
-        InvokeRepeating("ChangeHappiness", 0f, GameManager.gameTickTime);
+        if (happinessEffect != 0)
+        {
+            InvokeRepeating("ChangeHappiness", 0f, GameManager.gameTickTime);
+        }
     }
 
-    public bool Hire(Person employee)
+    public bool Hire(Employee employee)
     {
         if (Employees.Count < MaxEmployees)
         {
             Employees.Add(employee);
+            employee.SetWorkPlace(this);
             return true;
         }
         return false;
     }
 
-    public void Fire(Person employee)
+    public void Fire(Employee employee)
     {
         Employees.Remove(employee);
     }
 
     private void ChangeHappiness()
     {
+        if (GameManager.GamePaused)
+        {
+            return;
+        }
         if (Employees.Count > 0)
         {
             if (happinessEffect > 0)
@@ -69,9 +79,9 @@ public class Workplace : Building
         }
         return totalIncome;
     }
-    public float GetWorkplaceTotalHappiness()
+    public double GetWorkplaceTotalHappiness()
     {
-        float totalHappiness = 0;
+        double totalHappiness = 0;
         foreach (Person employee in Employees)
         {
             totalHappiness += employee.Happiness;
@@ -79,4 +89,13 @@ public class Workplace : Building
         return totalHappiness;
     }
 
+    protected void HireRandomlyGeneratedPeople(int numberOfEmployees)
+    {
+        for (int i = 0; i < numberOfEmployees; i++)
+        {
+            Employee employee = new Employee();
+            Hire(employee);
+            employeeHappinessList.Add(employee.Happiness);
+        }
+    }
 }

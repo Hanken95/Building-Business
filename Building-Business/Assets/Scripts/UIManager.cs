@@ -59,6 +59,7 @@ public class UIManager : MonoBehaviour
     {
         praiseText.text = "Praise: " + player.TotalPraise;
     }
+
     public void UpdateComplaints()
     {
         complaintsText.text = "Complaints: " + player.TotalComplaints;
@@ -72,7 +73,7 @@ public class UIManager : MonoBehaviour
 
     private void UpdateUIContinuously()
     {
-        if (!gameManager.GamePaused)
+        if (!GameManager.GamePaused)
         {
             UpdateUIMoney();
             UpdatePraise();
@@ -80,14 +81,12 @@ public class UIManager : MonoBehaviour
         }
     }
 
-
     public void PlaceBuilding()
     {
         var localTransform = chosenTile.transform.GetChild(0);
         objectToPurchase.transform.localScale = localTransform.localScale;
         if (objectToPurchase.GetType() == typeof(Office))
         {
-
             Instantiate(objectToPurchase.gameObject, localTransform.position,
                 localTransform.rotation, chosenTile.transform);
         }

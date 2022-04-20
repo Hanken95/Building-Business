@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class ComplaintsText : InfoText
 {
-    private void Start()
-    {
-        UpdateComplaints();
-    }
 
-    public void UpdateComplaints()
+    public override void SetText()
     {
-        SetText("Building complaints: " + selectedWorkPlace.Complaints.ToString());
+        SetSelectedWorkPlace();
+        newText = "Building complaints: " + selectedWorkPlace.Complaints.ToString();
+        base.SetText();
     }
 }

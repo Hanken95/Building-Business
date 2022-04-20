@@ -14,8 +14,8 @@ public class RandomNameGenerator
         "Feli",
         "Brean",
         "Frallan",
-        "Maximilian",
-        "Minimilian"
+        "Max",
+        "Mini"
     };
     public static string GenerateRandomName()
     {

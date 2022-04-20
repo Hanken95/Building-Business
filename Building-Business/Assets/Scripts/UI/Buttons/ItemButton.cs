@@ -11,17 +11,10 @@ public class ItemButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHand
 
     internal Image background;
 
-    public GameObject objectToPurchase;
-
-    private Text costText;
-
-    void Awake()
+    protected virtual void Awake()
     {
         background = GetComponent<Image>();
         page.Subscribe(this);
-        costText = GetComponentInChildren<Text>();
-        var cost = objectToPurchase.GetComponent<PurchaseAbleItem>().cost;
-        costText.text = cost.ToString() + " €";
     }
 
     public virtual void OnPointerClick(PointerEventData eventData)

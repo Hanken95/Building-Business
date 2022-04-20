@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HappinessText : InfoText
+public class EmployeeAmountText : InfoText
 {
+
     public override void SetText()
     {
         SetSelectedWorkPlace();
-        newText = "Total Happiness: " + selectedWorkPlace.GetWorkplaceTotalHappiness().ToString();
+        newText = "Employees: " + selectedWorkPlace.Employees.Count.ToString() + "/" +
+            selectedWorkPlace.MaxEmployees;
         base.SetText();
     }
 }

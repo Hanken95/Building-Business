@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class PraiseText : InfoText
 {
-    private void Start()
+    public override void SetText()
     {
-        SetText("Building praise: " + selectedWorkPlace.Praise.ToString());
+        SetSelectedWorkPlace();
+        newText = "Building praise: " + selectedWorkPlace.Praise.ToString();
+        base.SetText();
     }
+
 }
