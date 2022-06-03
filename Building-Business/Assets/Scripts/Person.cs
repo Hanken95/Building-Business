@@ -8,9 +8,11 @@ public class Person
 
     internal string name;
     internal int cost = 10;
-    private float maxHappiness = 10;
-    private float minHappiness = -10;
-    private Random random = new Random();
+    private double maxHappiness = 10;
+    private double minHappiness = -10;
+    private static readonly Random random = new Random(); 
+    private static readonly object syncLock = new object();
+
 
     internal Person()
     {
@@ -33,16 +35,29 @@ public class Person
 
     private void SetRandomStartingValues()
     {
-        var hap = random.Next(-1, 3);
-        Happiness = hap;
-        SkillLevel = random.Next(1, 5);
+        Happiness = RandomNumber(-1, 3);
+        SkillLevel = RandomNumber(1, 5);
     }
+
+    public static int RandomNumber(int min, int max)
+    {
+        lock (syncLock)
+        { 
+            return random.Next(min, max);
+        }
+    }
+
 
     public bool IncreaseHappiness(double amount)
     {
         if (Happiness < maxHappiness)
         {
             Happiness += amount;
+            if (Happiness > maxHappiness)
+            {
+                Happiness = maxHappiness;
+                return true;
+            }
             return false;
         }
         return true;
@@ -52,6 +67,11 @@ public class Person
         if (Happiness > minHappiness)
         {
             Happiness += amount;
+            if (Happiness < minHappiness)
+            {
+                Happiness = minHappiness;
+                return true;
+            }
             return false;
         }
         return true;

@@ -7,7 +7,7 @@ public class IncomeText : InfoText
     public override void SetText()
     {
         SetSelectedWorkPlace();
-        newText = "Building income: " + selectedWorkPlace.GetWorkplaceIncome().ToString() + "€";
+        newText = "Workplace income: " + selectedWorkPlace.GetWorkplaceIncome().ToString() + "€";
         base.SetText();
     }
 }

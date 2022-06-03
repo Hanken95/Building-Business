@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static bool GamePaused { get; private set; } = false;
-    public static float gameTickTime = 3;
+    public static float gameTickTime = 1;
     public List<Person> availablePeople = new List<Person>();
     private int availablePeopleStartingAmount = 8;
 

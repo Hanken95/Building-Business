@@ -7,7 +7,7 @@ public class PraiseText : InfoText
     public override void SetText()
     {
         SetSelectedWorkPlace();
-        newText = "Building praise: " + selectedWorkPlace.Praise.ToString();
+        newText = "Workplace praise: " + selectedWorkPlace.Praise.ToString();
         base.SetText();
     }
 

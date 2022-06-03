@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 public class Employee : Person
 {
-    Workplace workplace;
+    private Workplace workplace;
 
     public Employee() : base()
     {

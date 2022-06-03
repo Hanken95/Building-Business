@@ -10,13 +10,14 @@ public class Factory : Workplace
         cost = 120;
         value = 60;
         moneyGeneratedPerEmployeeSkillPoint = 1.2f;
-        happinessEffect = 0.1;
+        happinessEffect = -0.5;
         MaxEmployees = 30;
     }
 
     protected override void Start()
     {
         base.Start();
+        name = "Factory " + Player.GetWorplacesCount();
         Hire(new Employee("Trump", -2, 0));
         Hire(new Employee("Gert", 1.5, 3));
         Hire(new Employee("Lia", -1, 2));

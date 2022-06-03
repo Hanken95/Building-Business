@@ -5,7 +5,7 @@ using UnityEngine;
 
 class Player : MonoBehaviour
 {
-    List<Workplace> workPlaces = new List<Workplace>();
+    static List<Workplace> workPlaces = new List<Workplace>();
     public int TotalPraise { get; private set; } = 1;
     public int TotalComplaints { get; private set; } = 2;
 
@@ -31,6 +31,11 @@ class Player : MonoBehaviour
     public void AddWorkplace(Workplace workPlace)
     {
         workPlaces.Add(workPlace);
+    }
+
+    public static int GetWorplacesCount()
+    {
+        return workPlaces.Count;
     }
 
     public void SetPlayerTotalIncome()

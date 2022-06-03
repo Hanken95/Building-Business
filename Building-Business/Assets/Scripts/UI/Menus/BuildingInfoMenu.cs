@@ -8,8 +8,6 @@ public class BuildingInfoMenu : MonoBehaviour
 
     public EmployeesPage employeesPage;
 
-    public List<InfoText> infoTexts = new List<InfoText>();
-
 
 
     private void OnEnable()
