@@ -156,6 +156,7 @@ public class UIManager : MonoBehaviour
         }
         activeMenu = ActiveMenu.BuildingInfo;
         AbleToClick = AbleToClick.UI;
+
     }
 
     private void CloseBuildingInfoMenu()

@@ -10,6 +10,11 @@ public class InfoText : MonoBehaviour
     protected string newText;
 
 
+    protected void OnEnable()
+    {
+        SetText();
+    }
+
     protected void SetSelectedWorkPlace()
     {
         if (selectedWorkPlace != FindObjectOfType<UIManager>().selectedWorkplace)

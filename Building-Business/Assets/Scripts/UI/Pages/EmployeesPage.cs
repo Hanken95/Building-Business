@@ -116,6 +116,7 @@ public class EmployeesPage : PageWithItemButtons
         {
             employeeList.Add(employee);
         }
+        //employeeList = uIManager.selectedWorkplace.Employees;
         GenerateEmployeeButtons();
         SetEmployeeButtonValues();
     }
@@ -141,7 +142,7 @@ public class EmployeesPage : PageWithItemButtons
         {
             for (int i = 0; i < employeeItemButtons.Count; i++)
             {
-                employeeItemButtons[i].SetEmployee(employeeList[i]);
+                employeeItemButtons[i].SetEmployee(employeeList[i + ((pageIndex - 1) * 6)]);
                 employeeItemButtons[i].SetTexts();
             }
         }
