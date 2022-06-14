@@ -14,7 +14,7 @@ public class EmployeesPage : PageWithItemButtons
     public Transform thirdRow;
     public GameObject NextPageButton;
     public GameObject PreviousPageButton;
-    internal List<Employee> employeeList = new List<Employee>();
+    public List<Employee> employeeList = new List<Employee>();
     public int employeesPerPage = 6;
     private int pageIndex = 1;
 

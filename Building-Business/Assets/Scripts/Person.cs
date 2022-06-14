@@ -35,18 +35,44 @@ public class Person
 
     private void SetRandomStartingValues()
     {
-        Happiness = RandomNumber(-1, 3);
-        SkillLevel = RandomNumber(1, 5);
+        Happiness = RandomDoubleNumber(-1, 30);
+        SkillLevel = RandomIntNumber(1, 50);
     }
 
-    public static int RandomNumber(int min, int max)
+    public static int RandomIntNumber(int min, int max)
     {
         lock (syncLock)
         { 
             return random.Next(min, max);
         }
     }
+    
+    public static double RandomDoubleNumber(int min, int max)
+    {
+        double returnValue = RandomIntNumber(min, max);
+        double randomDoubleValue;
+         
+        lock (syncLock)
+        {
+            randomDoubleValue = Math.Round(random.NextDouble(), 1);
+        }
 
+        if (CoinFlip())
+        {
+            return returnValue - randomDoubleValue;
+        }
+        return returnValue + randomDoubleValue;
+    }
+
+    private static bool CoinFlip()
+    {
+        int coinFlip;
+        lock (syncLock)
+        {
+            coinFlip = random.Next(2);
+        }
+        return coinFlip == 1;
+    }
 
     public bool IncreaseHappiness(double amount)
     {

@@ -43,6 +43,7 @@ public class PageWithItemButtons : Page
         else
         {
             DeselectItemButton();
+            itemButton.background.color = buttonHover;
         }
     }
 

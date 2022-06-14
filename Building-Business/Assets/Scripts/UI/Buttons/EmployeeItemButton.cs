@@ -15,7 +15,6 @@ public class EmployeeItemButton : ItemButton
         transform.GetChild(1).GetComponent<Text>().text = employee.name;
         transform.GetChild(2).GetComponent<Text>().text = "Happiness: " + employee.Happiness.ToString();
         transform.GetChild(3).GetComponent<Text>().text = "Skill level: " + employee.SkillLevel.ToString();
-        transform.GetChild(4).GetComponent<Text>().text = "Cost: " + employee.cost.ToString() + "€";
     }
 
     internal void SetEmployee(Employee employee)
