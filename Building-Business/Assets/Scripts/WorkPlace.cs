@@ -37,6 +37,7 @@ public class Workplace : Building
     public void Fire(Employee employee)
     {
         Employees.Remove(employee);
+        employee.LeaveWorkPlace();
     }
 
     private void ChangeHappiness()

@@ -7275,8 +7275,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -14.1153}
+  m_SizeDelta: {x: 0, y: 28.2305}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1545808841
 MonoBehaviour:
@@ -7290,13 +7290,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3290b6f11d81894f9f93b2bdc984e71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonIdle: {r: 0.37254903, g: 0.15294118, b: 0.8039216, a: 0.3254902}
-  buttonHover: {r: 0.37254903, g: 0.15294118, b: 0.80392164, a: 0.6156863}
-  buttonActive: {r: 0.37254903, g: 0.15294118, b: 0.80392164, a: 1}
+  buttonIdle: {r: 1, g: 0.41960785, b: 0.41960785, a: 0.31764707}
+  buttonHover: {r: 1, g: 0.41960785, b: 0.41960785, a: 0.6509804}
+  buttonActive: {r: 0.93333334, g: 0.32156864, b: 0.3254902, a: 1}
   employeeButtonPrefab: {fileID: 1328766480390258323, guid: d4995b1bb77d20c4ba2488b7bb4a6b5b, type: 3}
-  firstRow: {fileID: 78393130}
-  secondRow: {fileID: 45867128}
-  thirdRow: {fileID: 1771614684}
+  rows:
+  - {fileID: 78393130}
+  - {fileID: 45867128}
+  - {fileID: 1771614684}
   NextPageButton: {fileID: 29730784}
   PreviousPageButton: {fileID: 1337551685}
   employeesPerPage: 6
@@ -7507,11 +7508,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1581130873}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6e89a81ce5913e47a3700d1c828b9c3, type: 3}
+  m_Script: {fileID: 11500000, guid: 337c276793fbfae46b84d38f7217f3a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   buttonIdle: {r: 1, g: 0.62352943, b: 0.2627451, a: 1}
-  buttonHover: {r: 0.9333334, g: 0.32156864, b: 0.3254902, a: 1}
+  buttonHover: {r: 0.93333334, g: 0.32156864, b: 0.3254902, a: 0.7176471}
+  buttonActive: {r: 0.93333334, g: 0.32156864, b: 0.3254902, a: 1}
+  employeesPage: {fileID: 1545808841}
 --- !u!114 &1581130876
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10516,7 +10519,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2085589491959145602
 MonoBehaviour:
   m_ObjectHideFlags: 0

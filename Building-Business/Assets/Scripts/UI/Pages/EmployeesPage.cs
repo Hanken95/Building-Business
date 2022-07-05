@@ -9,19 +9,18 @@ using UnityEngine.UI;
 public class EmployeesPage : PageWithItemButtons
 {
     public GameObject employeeButtonPrefab;
-    public Transform firstRow;
-    public Transform secondRow;
-    public Transform thirdRow;
+    public List<Transform> rows = new List<Transform>();
     public GameObject NextPageButton;
     public GameObject PreviousPageButton;
     public List<Employee> employeeList = new List<Employee>();
+    internal Employee SelectedEmployee { get; private set; }
     public int employeesPerPage = 6;
     private int pageIndex = 1;
 
-    private List<EmployeeItemButton> employeeItemButtons = new List<EmployeeItemButton>();
+    internal List<EmployeeItemButton> employeeItemButtons = new List<EmployeeItemButton>();
     private int startingIndex = 0;
     internal bool buttonsSet = false;
-    private int maxPageNumber;
+    private int pagesCount;
 
     protected override void SelectUnselectedItemButton(ItemButton itemButton)
     {
@@ -40,9 +39,21 @@ public class EmployeesPage : PageWithItemButtons
     {
         base.Start();
         SetEmployeeButtons();
-        SetMaxPageNumber();
-        UpdatePageCounter();
         buttonsSet = true;
+    }
+
+    public override void OnButtonSelected(ItemButton itemButton)
+    {
+        var selectedEmployeeItemButton = (EmployeeItemButton)itemButton;
+        if (SelectedEmployee == null || selectedEmployeeItemButton.employee != SelectedEmployee)
+        {
+            SelectedEmployee = selectedEmployeeItemButton.employee;
+        }
+        else
+        {
+            SelectedEmployee = null;
+        }
+        base.OnButtonSelected(itemButton);
     }
 
     internal void NextSubPage()
@@ -50,8 +61,9 @@ public class EmployeesPage : PageWithItemButtons
         pageIndex++;
         SetStartingIndex();
         UpdatePageCounter();
+        uIManager.DisableFireButton();
 
-        if (pageIndex >= maxPageNumber)
+        if (pageIndex >= pagesCount)
         {
             DisableNextPageArrow();
         }
@@ -65,12 +77,13 @@ public class EmployeesPage : PageWithItemButtons
         pageIndex--;
         SetStartingIndex();
         UpdatePageCounter();
+        uIManager.DisableFireButton();
 
         if (pageIndex < 2)
         {
             DisablePreviousPageArrow();
         }
-        if (!NextPageButton.activeSelf)
+        if (!NextPageButton.activeSelf && pageIndex < pagesCount)
         {
             EnableNextPageArrow();
         }
@@ -78,31 +91,12 @@ public class EmployeesPage : PageWithItemButtons
 
     private void UpdatePageCounter()
     {
+        SetMaxPageNumber();
         transform.GetChild(0).GetComponent<Text>().text = "";
         GetComponentInChildren<Text>().text = "Page " + pageIndex + "/" +
-            maxPageNumber;
+            pagesCount;
     }
 
-
-    private void EnableNextPageArrow()
-    {
-        NextPageButton.SetActive(true);
-    }
-
-    private void DisableNextPageArrow()
-    {
-        NextPageButton.SetActive(false);
-    }
-
-    private void EnablePreviousPageArrow()
-    {
-        PreviousPageButton.gameObject.SetActive(true);
-    }
-
-    private void DisablePreviousPageArrow()
-    {
-        PreviousPageButton.SetActive(false);
-    }
 
     private void SetStartingIndex()
     {
@@ -116,23 +110,25 @@ public class EmployeesPage : PageWithItemButtons
         {
             employeeList.Add(employee);
         }
-        //employeeList = uIManager.selectedWorkplace.Employees;
+        UpdatePageCounter();
         GenerateEmployeeButtons();
         SetEmployeeButtonValues();
     }
 
     private void DeleteEmployeeButtonsFromRows()
     {
-        DeleteChildren(firstRow);
-        DeleteChildren(secondRow);
-        DeleteChildren(thirdRow);
+        foreach (Transform row in rows)
+        {
+            DeleteItemButtonsInRow(row);
+        }
     }
 
-    private void DeleteChildren(Transform transform)
+    private void DeleteItemButtonsInRow(Transform row)
     {
-        foreach (Transform child in transform)
+        foreach (Transform child in row)
         {
             Destroy(child.gameObject);
+            itemButtons.Remove(child.GetComponent<ItemButton>());
         }
     }
 
@@ -154,33 +150,56 @@ public class EmployeesPage : PageWithItemButtons
         {
             employeeItemButtons.Clear();
         }
-        int loopStop = employeesPerPage + startingIndex;
-        if (employeesPerPage + startingIndex > employeeList.Count)
+        int employeesOnThisPage = employeeList.Count % employeesPerPage;
+        if (pageIndex < pagesCount || pageIndex == 1 && employeeList.Count >= employeesPerPage)
         {
-            loopStop = employeeList.Count;
+            employeesOnThisPage = employeesPerPage;
         }
-        for (int employeeIndex = startingIndex; employeeIndex < loopStop; 
+        for (int employeeIndex = 0; employeeIndex < employeesOnThisPage; 
             employeeIndex++)
         {
-            employeeButtonPrefab.GetComponent<EmployeeItemButton>().page = this;
-            if (employeeIndex % 3 == 0)
+            if (employeeButtonPrefab.GetComponent<EmployeeItemButton>().page != this)
             {
-                employeeItemButtons.Add(Instantiate(employeeButtonPrefab, firstRow).GetComponent<EmployeeItemButton>());
+                employeeButtonPrefab.GetComponent<EmployeeItemButton>().page = this;
             }
-            else if (employeeIndex % 2 == 0)
+            if (employeeIndex == 0 || employeeIndex == 3)
             {
-                employeeItemButtons.Add(Instantiate(employeeButtonPrefab, thirdRow).GetComponent<EmployeeItemButton>());
+                employeeItemButtons.Add(Instantiate(employeeButtonPrefab, rows[0]).GetComponent<EmployeeItemButton>());
+            }
+            else if (employeeIndex == 2 || employeeIndex == 5)
+            {
+                employeeItemButtons.Add(Instantiate(employeeButtonPrefab, rows[2]).GetComponent<EmployeeItemButton>());
             }
             else
             {
-                employeeItemButtons.Add(Instantiate(employeeButtonPrefab, secondRow).GetComponent<EmployeeItemButton>());
+                employeeItemButtons.Add(Instantiate(employeeButtonPrefab, rows[1]).GetComponent<EmployeeItemButton>());
             }
         }
     }
 
     private void SetMaxPageNumber()
     {
-        maxPageNumber = ((employeeList.Count / employeesPerPage) + 1);
+        pagesCount = (((employeeList.Count - 1) / employeesPerPage) + 1);
+    }
+
+    private void EnableNextPageArrow()
+    {
+        NextPageButton.SetActive(true);
+    }
+
+    private void DisableNextPageArrow()
+    {
+        NextPageButton.SetActive(false);
+    }
+
+    private void EnablePreviousPageArrow()
+    {
+        PreviousPageButton.gameObject.SetActive(true);
+    }
+
+    private void DisablePreviousPageArrow()
+    {
+        PreviousPageButton.SetActive(false);
     }
 }
 

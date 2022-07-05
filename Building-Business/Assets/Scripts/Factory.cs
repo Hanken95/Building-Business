@@ -23,7 +23,7 @@ public class Factory : Workplace
         Hire(new Employee("Lia", -1, 2));
         Hire(new Employee("Bert", 4, 1));
         Hire(new Employee("Fia", 2, 5));
-        HireRandomlyGeneratedPeople(5);
+        HireRandomlyGeneratedPeople(2);
     }
 
     

@@ -19,7 +19,6 @@ public class PageWithItemButtons : Page
         uIManager = FindObjectOfType<UIManager>();
     }
 
-
     public void Subscribe(ItemButton itemButton)
     {
         itemButtons.Add(itemButton);
@@ -34,7 +33,7 @@ public class PageWithItemButtons : Page
         }
     }
 
-    public void OnButtonSelected(ItemButton itemButton)
+    public virtual void OnButtonSelected(ItemButton itemButton)
     {
         if (selectedButton == null || selectedButton != itemButton)
         {
@@ -57,7 +56,6 @@ public class PageWithItemButtons : Page
         selectedButton = itemButton;
         ResetNonSelectedButtons();
         itemButton.background.color = buttonActive;
-        
     }
 
     public void OnButtonExit()
@@ -76,21 +74,30 @@ public class PageWithItemButtons : Page
             }
             catch (Exception)
             {
-                Debug.Log("No background or something");
+                Debug.Log("No background");
             }
-            
         }
     }
 
     private void ResetNonSelectedButtons()
     {
+        List<ItemButton> itemButtonsToRemove = new List<ItemButton>();
         foreach (ItemButton itemButton in itemButtons)
         {
+            if (itemButton == null)
+            {
+                itemButtonsToRemove.Add(itemButton);
+                continue;
+            }
             if (selectedButton != null && itemButton == selectedButton)
             {
                 continue;
             }
             itemButton.background.color = buttonIdle;
+        }
+        foreach (var itemButton in itemButtonsToRemove)
+        {
+            itemButtons.Remove(itemButton);
         }
     }
 }
